@@ -11,6 +11,10 @@
   "license": "ISC",
   "description": "servidor responsável pela criação das APIs Rest presentes nas funcionalidades do ambiente",
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.4.1"
   }
 }
