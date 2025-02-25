@@ -28,6 +28,22 @@ router.get('/', async (req, res) => {
   res.status(200).json({ message: 'Listando os usuários:', users })
 })
 
+//Atualizando usuários
+router.put('/:id', async (req, res) => {
+
+  const user = await prisma.tab_users.update({
+    where: { id: req.params.id },
+    data: {
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      password: req.body.password
+    }
+  })
+
+  res.status(200).json(user)
+})
+
 //Deletando usuários
 router.delete('/:id', async (req, res) => {
 
