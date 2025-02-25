@@ -28,4 +28,14 @@ router.get('/', async (req, res) => {
   res.status(200).json({ message: 'Listando os usuários:', users })
 })
 
+//Deletando usuários
+router.delete('/:id', async (req, res) => {
+
+  const user = await prisma.tab_users.delete({
+    where: { id: req.params.id }
+  })
+
+  res.status(200).json({ message: 'Usuário deletado com sucesso', user })
+})
+
 export default router
