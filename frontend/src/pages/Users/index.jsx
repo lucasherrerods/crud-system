@@ -1,11 +1,14 @@
 import Sidebar from '../../components/Sidebar'
+import Main from '../../components/Main'
 
 function Users() {
 
   return (
     <div>
       <Sidebar></Sidebar>
-      <h2>Users Page</h2>
+      <Main>
+        <h1 className='text-2xl text-gray-800 font-bold'>Usuários</h1>
+      </Main>
     </div>
   )
 }

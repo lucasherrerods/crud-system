@@ -1,11 +1,14 @@
 import Sidebar from '../../components/Sidebar'
+import Main from '../../components/Main'
 
 function Products() {
 
   return (
     <div>
       <Sidebar></Sidebar>
-      <h2>Products Page</h2>
+      <Main>
+        <h1 className='text-2xl text-gray-800 font-bold'>Produtos</h1>
+      </Main>
     </div>
   )
 }

@@ -1,11 +1,14 @@
 import Sidebar from '../../components/Sidebar'
+import Main from '../../components/Main'
 
 function Home() {
 
   return (
     <div>
       <Sidebar></Sidebar>
-      <h2>Home Page</h2>
+      <Main>
+        <h1 className='text-2xl text-gray-800 font-bold'>Home</h1>
+      </Main>
     </div>
   )
 }
