@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
 import profile from '../../assets/profile.jpg'
 import { Home, User, Package, LogOut, ChevronRight } from "lucide-react"
+import { ToggleContext } from '../../contexts/ToggleContext'
 
 function Sidebar() {
   // Hook para pegar a localização atual da URL
@@ -10,8 +11,8 @@ function Sidebar() {
   // Verifica se a rota ativa é a atual
   const isActive = (path) => location.pathname === path
 
-  // Estado que controla a funcionalidade toggle da sidebar, inicia fechada
-  const [isOpen, setIsOpen] = useState(false)
+  //Utilizando o hook criado
+  const { isOpen, toggleSidebar } = useContext(ToggleContext)
 
   useEffect(() => {
     // Insere o título respectivo da página atual
@@ -31,7 +32,7 @@ function Sidebar() {
         <h1 className={`${isOpen ? 'text-white uppercase font-bold tracking-widest' : 'hidden'}`}>CRUD System</h1>
         {/* Abreviação do título, só fica visível quando a sidebar está fechada */}
         <span className={isOpen ? 'hidden' : 'text-white uppercase font-bold tracking-widest'}>CS</span>
-        <ChevronRight size={16} className={`absolute cursor-pointer w-5 h-5 text-black bg-yellow-400 rounded-full ${isOpen ? 'rotate-180 -right-1' : 'rotate-0 -right-3'}`} onClick={() => setIsOpen(!isOpen)} />
+        <ChevronRight size={16} className={`absolute cursor-pointer w-5 h-5 text-black bg-yellow-400 rounded-full ${isOpen ? 'rotate-180 -right-1' : 'rotate-0 -right-3'}`} onClick={toggleSidebar} />
       </header>
       <div className='flex flex-col items-center gap-3 mt-14'>
         <img src={profile} alt="Foto de perfil" className={`rounded-full hover:scale-105 ${isOpen ? 'h-18 w-20' : 'h-12 w-14'}`} />
