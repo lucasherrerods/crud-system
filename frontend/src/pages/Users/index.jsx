@@ -3,11 +3,40 @@ import Sidebar from '../../components/Sidebar'
 import Main from '../../components/Main'
 import Modal from '../../components/Modal'
 import { useModal } from '../../contexts/ModalContext'
+import { useState } from 'react'
+import { createUsers } from '../../services/users'
 
 function Users() {
 
   //Utilizando contexto criado
   const { open, toggleModal } = useModal()
+
+  //Estado inicial do formulário
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  })
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData, //Mantém o valor que o input ja possui
+      [e.target.name]: e.target.value //Atualiza o campo
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      await createUsers(formData) //Chama a função importada e envia os dados preenchidos no form
+      alert('Usuário criado com sucesso.')
+      toggleModal()
+      setFormData({ name: '', email: '', phone: '' })//Reseta o form
+    } catch (error) {
+      return alert('Preencha o formulário corretamente.')
+    }
+  }
 
   return (
     <div>
@@ -30,24 +59,45 @@ function Users() {
             <div className='mx-auto my-4'>
               <h3 className='text-lg text-gray-800'>Adicionar Usuário</h3>
             </div>
-            <form className='flex flex-col gap-5 text-xs text-black'>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-5 text-xs text-black'>
               <div className='flex items-center gap-3'>
                 <User size={16} />
-                <input type="text" placeholder='Nome' className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400' />
+                <input
+                  type="text"
+                  placeholder='Nome'
+                  name='name'
+                  value={formData.name}
+                  onChange={handleChange}
+                  className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
+                />
               </div>
               <div className='flex items-center gap-3'>
                 <Mail size={16} />
-                <input type="email" placeholder='E-mail' className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400' />
+                <input
+                  type="email"
+                  placeholder='E-mail'
+                  name='email'
+                  value={formData.email}
+                  onChange={handleChange}
+                  className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
+                />
               </div>
               <div className='flex items-center gap-3'>
                 <Phone size={16} />
-                <input type="number" placeholder='Telefone' className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400' />
+                <input
+                  type="number"
+                  placeholder='Telefone'
+                  name='phone'
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
+                />
+              </div>
+              <div className='flex items-center justify-around pt-6 text-xs'>
+                <button type='button' className='py-2 px-4 cursor-pointer bg-gray-200 transition-all ease-in-out duration-200 rounded-lg hover:scale-105' onClick={toggleModal}>Cancelar</button>
+                <button type='submit' className='py-2 px-4 cursor-pointer bg-green-500 text-white transition-all ease-in-out duration-200 rounded-lg hover:scale-105'>Salvar</button>
               </div>
             </form>
-            <div className='flex items-center justify-around pt-6 text-xs'>
-              <button className='py-2 px-4 cursor-pointer bg-gray-200 transition-all ease-in-out duration-200 rounded-lg hover:scale-105' onClick={toggleModal}>Cancelar</button>
-              <button className='py-2 px-4 cursor-pointer bg-green-500 text-white transition-all ease-in-out duration-200 rounded-lg hover:scale-105'>Salvar</button>
-            </div>
           </div>
         </Modal>
       </Main>
