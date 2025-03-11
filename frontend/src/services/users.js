@@ -1,5 +1,6 @@
 export const createUsers = async (usersData) => {
 
+  //POST
   try {
 
     const response = await fetch('http://localhost:3000/api/users', {
@@ -17,6 +18,20 @@ export const createUsers = async (usersData) => {
     return await response.json()
   } catch (error) {
     console.error('Erro na requisiação:', error)
+    throw error
+  }
+}
+
+//GET
+export const showUsers = async () => {
+
+  try {
+    const response = await fetch('http://localhost:3000/api/users')
+    const data = await response.json()
+
+    return data.users
+  } catch (error) {
+    console.error('Erro na requisição:', error)
     throw error
   }
 }

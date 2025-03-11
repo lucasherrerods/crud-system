@@ -1,12 +1,25 @@
-import { User, Mail, Phone } from 'lucide-react'
+import { User, Mail, Phone, PencilLine, Trash } from 'lucide-react'
 import Sidebar from '../../components/Sidebar'
 import Main from '../../components/Main'
 import Modal from '../../components/Modal'
 import { useModal } from '../../contexts/ModalContext'
-import { useState } from 'react'
-import { createUsers } from '../../services/users'
+import { useState, useEffect } from 'react'
+import { createUsers, showUsers } from '../../services/users'
 
 function Users() {
+  const [allUsers, setAllUsers] = useState()
+
+  useEffect(() => {
+
+    async function loadUsers() {
+      //Esperando a requisição GET e passando o resultado dentro do estado
+      const users = await showUsers()
+
+      setAllUsers(users)
+    }
+
+    loadUsers()
+  }, [])
 
   //Utilizando contexto criado
   const { open, toggleModal } = useModal()
@@ -29,10 +42,12 @@ function Users() {
     e.preventDefault()
 
     try {
-      await createUsers(formData) //Chama a função importada e envia os dados preenchidos no form
+      const newUser = await createUsers(formData) //Chama a função importada e envia os dados preenchidos no form
       alert('Usuário criado com sucesso.')
       toggleModal()
-      setFormData({ name: '', email: '', phone: '' })//Reseta o form
+      setFormData({ name: '', email: '', phone: '' }) //Reseta o form
+
+      setAllUsers((prevUsers) => [...prevUsers, newUser]) //Adicionando novo usuário na exibição da página
     } catch (error) {
       return alert('Preencha o formulário corretamente.')
     }
@@ -100,6 +115,22 @@ function Users() {
             </form>
           </div>
         </Modal>
+        <div className='mt-8 relative'>
+          <ul className='flex flex-col gap-5 text-sm'>
+            {allUsers && allUsers.length > 0 && allUsers.map((user) => (
+              <li key={user.id} className='group grid grid-cols-4 text-center py-3 border shadow-xs border-gray-200 transition-all ease-in-out duration-200 hover:shadow-md'>
+                <p>{user.name}</p>
+                <p>{user.email}</p>
+                <p>{user.phone ? user.phone : '-'}</p>
+                <p className={`font-bold ${user.isActive ? 'text-green-400' : 'text-red-400'}`}>{user.isActive ? 'Ativo' : 'Inativo'}</p>
+                <div className='absolute right-0 flex gap-4 mr-4 transition-all ease-in-out duration-600 opacity-0 group-hover:opacity-100'>
+                  <p><PencilLine size={14} className='cursor-pointer transition-all ease-in-out duration-200 hover:scale-110' /></p>
+                  <p><Trash size={14} className='cursor-pointer transition-all ease-in-out duration-200 text-red-400 hover:scale-110' /></p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Main>
     </div>
   )
