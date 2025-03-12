@@ -4,9 +4,13 @@ import Main from '../../components/Main'
 import Modal from '../../components/Modal'
 import { useModal } from '../../contexts/ModalContext'
 import { useState, useEffect } from 'react'
-import { createUsers, showUsers } from '../../services/users'
+import { createUsers, showUsers, deleteUsers } from '../../services/users'
+import { ToastContainer, toast } from 'react-toastify'
 
 function Users() {
+  //Card de notificações dinâmicas
+  const notify = (msg, type) => toast[type](msg, { position: 'bottom-left', autoClose: 1500, theme: 'light' })
+
   const [allUsers, setAllUsers] = useState()
 
   useEffect(() => {
@@ -43,13 +47,24 @@ function Users() {
 
     try {
       const newUser = await createUsers(formData) //Chama a função importada e envia os dados preenchidos no form
-      alert('Usuário criado com sucesso.')
+      notify('Usuário criado com sucesso!', 'success')
       toggleModal()
       setFormData({ name: '', email: '', phone: '' }) //Reseta o form
 
       setAllUsers((prevUsers) => [...prevUsers, newUser]) //Adicionando novo usuário na exibição da página
     } catch (error) {
-      return alert('Preencha o formulário corretamente.')
+      notify(error.message, 'error')
+    }
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteUsers(id)
+      notify('Usuário deletado com sucesso!', 'success')
+
+      setAllUsers((prevUsers) => prevUsers.filter((user) => user.id !== id))
+    } catch (error) {
+      notify(error.message, 'error')
     }
   }
 
@@ -57,12 +72,12 @@ function Users() {
     <div>
       <Sidebar></Sidebar>
       <Main>
-        <header className='flex items-center justify-between border-b-1 border-b-gray-300 pb-6'>
+        <header className='flex items-center justify-between pb-6'>
           <h1 className='text-2xl text-gray-800 font-bold'>Usuários</h1>
           <button className='bg-[#FEAF00] text-sm px-4 py-2 rounded-lg cursor-pointer transition-all ease-in-out duration-300 hover:-translate-y-1' onClick={toggleModal}>Adicionar usuário</button>
         </header>
         <div className='pt-6'>
-          <ul className='flex items-center justify-around text-xs'>
+          <ul className='flex items-center justify-around text-xs bg-sky-950 text-white py-3'>
             <li>Nome</li>
             <li>E-mail</li>
             <li>Telefone</li>
@@ -118,20 +133,21 @@ function Users() {
         <div className='mt-8 relative'>
           <ul className='flex flex-col gap-5 text-sm'>
             {allUsers && allUsers.length > 0 && allUsers.map((user) => (
-              <li key={user.id} className='group grid grid-cols-4 text-center py-3 border shadow-xs border-gray-200 transition-all ease-in-out duration-200 hover:shadow-md'>
+              <li key={user.id} className='group grid grid-cols-4 text-center py-3 border-b-1 shadow-xs border-gray-200 transition-all ease-in-out duration-200 hover:shadow-md'>
                 <p>{user.name}</p>
                 <p>{user.email}</p>
                 <p>{user.phone ? user.phone : '-'}</p>
                 <p className={`font-bold ${user.isActive ? 'text-green-400' : 'text-red-400'}`}>{user.isActive ? 'Ativo' : 'Inativo'}</p>
                 <div className='absolute right-0 flex gap-4 mr-4 transition-all ease-in-out duration-600 opacity-0 group-hover:opacity-100'>
                   <p><PencilLine size={14} className='cursor-pointer transition-all ease-in-out duration-200 hover:scale-110' /></p>
-                  <p><Trash size={14} className='cursor-pointer transition-all ease-in-out duration-200 text-red-400 hover:scale-110' /></p>
+                  <p><Trash size={14} className='cursor-pointer transition-all ease-in-out duration-200 text-red-400 hover:scale-110' onClick={() => handleDelete(user.id)} /></p>
                 </div>
               </li>
             ))}
           </ul>
         </div>
       </Main>
+      <ToastContainer />
     </div>
   )
 }

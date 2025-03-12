@@ -12,12 +12,12 @@ export const createUsers = async (usersData) => {
     })
 
     if (!response.ok) {
-      throw new Error('Erro ao criar usuário.')
+      throw new Error('Este e-mail já está cadastrado, tente novamente.')
     }
 
     return await response.json()
   } catch (error) {
-    console.error('Erro na requisiação:', error)
+    console.error('Erro na requisição:', error)
     throw error
   }
 }
@@ -32,6 +32,20 @@ export const showUsers = async () => {
     return data.users
   } catch (error) {
     console.error('Erro na requisição:', error)
-    throw error
+  }
+}
+
+//DELETE
+export const deleteUsers = async (id) => {
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      method: 'DELETE'
+    })
+
+    return await response.json()
+  } catch (error) {
+    console.error('Erro na requisição:', error)
+    throw new Error('Erro ao deletar usuário, tente novamente.')
   }
 }
