@@ -49,3 +49,22 @@ export const deleteUsers = async (id) => {
     throw new Error('Erro ao deletar usuário, tente novamente.')
   }
 }
+
+//PUT 
+export const updateUser = async (id, updateData) => {
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateData),
+    })
+
+    return await response.json()
+  } catch (error) {
+    console.error('Erro na requisição:', error)
+    throw new Error('Erro ao atualizar usuário, tente novamente.')
+  }
+}
