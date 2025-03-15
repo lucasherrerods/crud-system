@@ -1,7 +1,8 @@
-import { User, Mail, Phone, PencilLine, Trash } from 'lucide-react'
+import { User, Mail, Phone, PencilLine, Trash, CircleDashed } from 'lucide-react'
 import Sidebar from '../../components/Sidebar'
 import Main from '../../components/Main'
 import Modal from '../../components/Modal'
+import SwitchButton from '../../components/SwitchButton'
 import { useModal } from '../../contexts/ModalContext'
 import { useState, useEffect } from 'react'
 import { createUsers, showUsers, deleteUsers, updateUser } from '../../services/users.js'
@@ -34,7 +35,8 @@ function Users() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    isActive: true
   })
 
   const handleChange = (e) => {
@@ -145,6 +147,15 @@ function Users() {
                   className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
                 />
               </div>
+              {selectedUser && (
+                <div className='flex items-center gap-3'>
+                  <CircleDashed size={16} />
+                  <SwitchButton
+                    isActive={formData.isActive}
+                    onClick={() => setFormData(prev => ({ ...prev, isActive: !prev.isActive }))}
+                  />
+                </div>
+              )}
               <div className='flex items-center justify-around pt-6 text-xs'>
                 <button
                   type='button' className='py-2 px-4 cursor-pointer bg-gray-200 transition-all ease-in-out duration-200 rounded-lg hover:scale-105'
