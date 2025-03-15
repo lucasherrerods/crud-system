@@ -16,15 +16,13 @@ function Users() {
 
   const [selectedUser, setSelectedUser] = useState(null)
 
+  const loadUsers = async () => {
+    //Esperando a requisição GET e passando o resultado dentro do estado
+    const users = await showUsers()
+    setAllUsers(users)
+  }
+
   useEffect(() => {
-
-    async function loadUsers() {
-      //Esperando a requisição GET e passando o resultado dentro do estado
-      const users = await showUsers()
-
-      setAllUsers(users)
-    }
-
     loadUsers()
   }, [])
 
@@ -106,10 +104,10 @@ function Users() {
         </header>
         <div className='pt-6'>
           <ul className='flex items-center justify-around text-xs bg-sky-950 text-white py-3'>
-            <li>Nome</li>
-            <li>E-mail</li>
-            <li>Telefone</li>
-            <li>Status</li>
+            <li className="w-1/4 text-center">Nome</li>
+            <li className="w-1/4 text-center">E-mail</li>
+            <li className="w-1/4 text-center">Telefone</li>
+            <li className="w-1/4 text-center">Status</li>
           </ul>
         </div>
         <Modal open={open}>
