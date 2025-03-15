@@ -57,6 +57,10 @@ function Users() {
     e.preventDefault()
 
     try {
+      if (!formData.name || !formData.email) {
+        return notify('Preencha todas as informações corretamente.', 'error')
+      }
+
       if (selectedUser) {
         //Se tiver um usuário selecionado, atualiza os dados (PUT)
         const editUser = await updateUser(selectedUser.id, formData)
