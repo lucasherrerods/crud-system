@@ -14,7 +14,6 @@ router.post('/', async (req, res) => {
         email: req.body.email,
         phone: req.body.phone,
         role: req.body.role,
-        isActive: req.body.isActive === "true" //Convertendo string para boolean
       }
     })
 
@@ -49,7 +48,7 @@ router.put('/:id', async (req, res) => {
         email: req.body.email,
         phone: req.body.phone,
         role: req.body.role,
-        isActive: req.body.isActive === "true"
+        isActive: req.body.isActive
       }
     })
 

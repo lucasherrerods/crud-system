@@ -12,9 +12,9 @@ router.post('/', async (req, res) => {
       data: {
         name: req.body.name,
         description: req.body.description,
-        price: req.body.price,
+        price: Number(req.body.price),
         category: req.body.category,
-        stock: req.body.stock
+        stock: parseInt(req.body.stock, 10)
       }
     })
 
@@ -45,9 +45,9 @@ router.put('/:id', async (req, res) => {
       data: {
         name: req.body.name,
         description: req.body.description,
-        price: req.body.price,
+        price: Number(req.body.price),
         category: req.body.category,
-        stock: req.body.stock
+        stock: parseInt(req.body.stock, 10)
       }
     })
 
