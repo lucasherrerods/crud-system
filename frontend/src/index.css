@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  appearance: none;
+}
