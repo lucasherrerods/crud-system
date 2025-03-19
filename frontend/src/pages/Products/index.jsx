@@ -192,7 +192,7 @@ function Products() {
         </div>
       </Main>
       <ToastContainer />
-    </div >
+    </div>
   )
 }
 
