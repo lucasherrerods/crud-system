@@ -48,7 +48,7 @@ const StockCategory = () => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Legend />
+        <Legend layout="horizontal" verticalAlign="top" align="center" />
         <Tooltip />
       </PieChart>
     </ResponsiveContainer>
