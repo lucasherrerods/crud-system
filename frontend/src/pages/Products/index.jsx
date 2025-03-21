@@ -54,7 +54,7 @@ function Products() {
     e.preventDefault()
 
     try {
-      if (!formData.name || !formData.price || !formData.stock) {
+      if (!formData.name || !formData.price || !formData.category || !formData.stock) {
         return notify('Preencha todas as informações corretamente.', 'error')
       }
 
@@ -139,14 +139,20 @@ function Products() {
               </div>
               <div className='flex items-center gap-3'>
                 <AlignStartVertical size={16} />
-                <input
-                  type="text"
-                  placeholder='Categoria'
+                <select
                   name='category'
                   value={formData.category}
                   onChange={handleChange}
                   className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
-                />
+                >
+                  <option disabled value="">Selecione a categoria</option>
+                  <option value="Bebida">Bebida</option>
+                  <option value="Alimentos">Alimentos</option>
+                  <option value="Beleza">Beleza</option>
+                  <option value="Limpeza">Limpeza</option>
+                  <option value="Eletrônicos">Eletrônicos</option>
+                  <option value="Moda e acessórios">Moda e acessórios</option>
+                </select>
               </div>
               <div className='flex items-center gap-3'>
                 <Layers size={16} />
