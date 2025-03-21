@@ -156,14 +156,18 @@ function Products() {
               </div>
               <div className='flex items-center gap-3'>
                 <Layers size={16} />
-                <input
-                  type="number"
-                  placeholder='Quantidade'
-                  name='stock'
-                  value={formData.stock}
-                  onChange={handleChange}
-                  className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
-                />
+                <div className='flex gap-3'>
+                  <button type='button' className='px-2 border rounded-full text-red-500 cursor-pointer transition-all duration-200 ease-in-out hover:text-white hover:bg-red-500' onClick={() => setFormData(prev => ({ ...prev, stock: prev.stock - 10 }))}>-10</button>
+                  <input
+                    type="number"
+                    placeholder='Quantidade'
+                    name='stock'
+                    value={formData.stock}
+                    onChange={handleChange}
+                    className='w-20 text-center p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
+                  />
+                  <button type='button' className='px-2 border rounded-full text-green-500 cursor-pointer transition-all duration-200 ease-in-out hover:text-white hover:bg-green-500' onClick={() => setFormData(prev => ({ ...prev, stock: prev.stock + 10 }))}>+10</button>
+                </div>
               </div>
               <div className='flex items-center justify-around pt-6 text-xs'>
                 <button
