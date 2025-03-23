@@ -54,7 +54,7 @@ function Products() {
     e.preventDefault()
 
     try {
-      if (!formData.name || !formData.price || !formData.stock) {
+      if (!formData.name || !formData.price || !formData.category || !formData.stock) {
         return notify('Preencha todas as informações corretamente.', 'error')
       }
 
@@ -93,6 +93,10 @@ function Products() {
     }
   }
 
+  $(document).ready(function () {
+    $('#price').mask('000.000.000,00', { reverse: true }) // Aplica a máscara no input price
+  })
+
   return (
     <div>
       <Sidebar></Sidebar>
@@ -102,11 +106,11 @@ function Products() {
           <button className='bg-[#FEAF00] text-sm px-4 py-2 rounded-lg cursor-pointer transition-all ease-in-out duration-300 hover:-translate-y-1' onClick={toggleModal}>Adicionar produto</button>
         </header>
         <div className='pt-6'>
-          <ul className='flex items-center justify-around text-xs bg-sky-950 text-white py-3'>
-            <li className="w-1/4 text-center">Nome</li>
-            <li className="w-1/4 text-center">Preço</li>
-            <li className="w-1/4 text-center">Categoria</li>
-            <li className="w-1/4 text-center">Quantidade</li>
+          <ul className='flex items-center justify-around text-xs bg-sky-800 text-white py-3 rounded-lg'>
+            <li className="w-1/4 text-center font-semibold">Nome</li>
+            <li className="w-1/4 text-center font-semibold">Preço</li>
+            <li className="w-1/4 text-center font-semibold">Categoria</li>
+            <li className="w-1/4 text-center font-semibold">Quantidade (un.)</li>
           </ul>
         </div>
         <Modal open={open}>
@@ -129,7 +133,8 @@ function Products() {
               <div className='flex items-center gap-3'>
                 <CircleDollarSign size={16} />
                 <input
-                  type="number"
+                  type="text"
+                  id='price'
                   placeholder='`Preço'
                   name='price'
                   value={formData.price}
@@ -139,25 +144,35 @@ function Products() {
               </div>
               <div className='flex items-center gap-3'>
                 <AlignStartVertical size={16} />
-                <input
-                  type="text"
-                  placeholder='Categoria'
+                <select
                   name='category'
                   value={formData.category}
                   onChange={handleChange}
                   className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
-                />
+                >
+                  <option disabled value="">Selecione a categoria</option>
+                  <option value="Bebida">Bebida</option>
+                  <option value="Alimentos">Alimentos</option>
+                  <option value="Beleza">Beleza</option>
+                  <option value="Limpeza">Limpeza</option>
+                  <option value="Eletrônicos">Eletrônicos</option>
+                  <option value="Moda e acessórios">Moda e acessórios</option>
+                </select>
               </div>
               <div className='flex items-center gap-3'>
                 <Layers size={16} />
-                <input
-                  type="number"
-                  placeholder='Quantidade'
-                  name='stock'
-                  value={formData.stock}
-                  onChange={handleChange}
-                  className='w-full p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
-                />
+                <div className='flex gap-3'>
+                  <button type='button' className='px-2 border rounded-full text-red-500 cursor-pointer transition-all duration-200 ease-in-out hover:text-white hover:bg-red-500' onClick={() => setFormData(prev => ({ ...prev, stock: prev.stock - 10 }))}>-10</button>
+                  <input
+                    type="number"
+                    placeholder='Quantidade'
+                    name='stock'
+                    value={formData.stock}
+                    onChange={handleChange}
+                    className='w-20 text-center p-2 rounded-lg transition-all ease-in-out duration-200 outline-0 border border-gray-200 focus:border-sky-400'
+                  />
+                  <button type='button' className='px-2 border rounded-full text-green-500 cursor-pointer transition-all duration-200 ease-in-out hover:text-white hover:bg-green-500' onClick={() => setFormData(prev => ({ ...prev, stock: prev.stock + 10 }))}>+10</button>
+                </div>
               </div>
               <div className='flex items-center justify-around pt-6 text-xs'>
                 <button
@@ -179,9 +194,9 @@ function Products() {
             {allProducts && allProducts.length > 0 && allProducts.map((product) => (
               <li key={product.id} className='group grid grid-cols-4 text-center py-3 border-b-1 shadow-xs border-gray-200 transition-all ease-in-out duration-200 hover:shadow-md'>
                 <p>{product.name}</p>
-                <p>{product.price}</p>
+                <p>R$ {product.price}</p>
                 <p>{product.category ? product.category : '-'}</p>
-                <p>{product.stock} un.</p>
+                <p>{product.stock}</p>
                 <div className='absolute right-0 flex gap-4 mr-4 transition-all ease-in-out duration-600 opacity-0 group-hover:opacity-100'>
                   <p><PencilLine size={14} className='cursor-pointer transition-all ease-in-out duration-200 hover:scale-110' onClick={() => handleEdit(product)} /></p>
                   <p><Trash size={14} className='cursor-pointer transition-all ease-in-out duration-200 text-red-400 hover:scale-110' onClick={() => handleDelete(product.id)} /></p>
