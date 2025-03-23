@@ -94,6 +94,10 @@ function Users() {
     }
   }
 
+  $(document).ready(function () {
+    $('#phone').mask('(00) 00000-0000') // Aplica a máscara no input phone
+  })
+
   return (
     <div>
       <Sidebar></Sidebar>
@@ -103,11 +107,11 @@ function Users() {
           <button className='bg-[#FEAF00] text-sm px-4 py-2 rounded-lg cursor-pointer transition-all ease-in-out duration-300 hover:-translate-y-1' onClick={toggleModal}>Adicionar usuário</button>
         </header>
         <div className='pt-6'>
-          <ul className='flex items-center justify-around text-xs bg-sky-950 text-white py-3'>
-            <li className="w-1/4 text-center">Nome</li>
-            <li className="w-1/4 text-center">E-mail</li>
-            <li className="w-1/4 text-center">Telefone</li>
-            <li className="w-1/4 text-center">Status</li>
+          <ul className='flex items-center justify-around text-xs bg-sky-800 text-white py-3 rounded-lg'>
+            <li className="w-1/4 text-center font-semibold">Nome</li>
+            <li className="w-1/4 text-center font-semibold">E-mail</li>
+            <li className="w-1/4 text-center font-semibold">Telefone</li>
+            <li className="w-1/4 text-center font-semibold">Status</li>
           </ul>
         </div>
         <Modal open={open}>
@@ -141,8 +145,9 @@ function Users() {
               <div className='flex items-center gap-3'>
                 <Phone size={16} />
                 <input
-                  type="number"
-                  placeholder='Telefone'
+                  type="text"
+                  id='phone'
+                  placeholder='(99) 99999-9999'
                   name='phone'
                   value={formData.phone}
                   onChange={handleChange}

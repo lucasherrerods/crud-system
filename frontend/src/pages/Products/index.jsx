@@ -93,6 +93,10 @@ function Products() {
     }
   }
 
+  $(document).ready(function () {
+    $('#price').mask('000.000.000,00', { reverse: true }) // Aplica a máscara no input price
+  })
+
   return (
     <div>
       <Sidebar></Sidebar>
@@ -102,11 +106,11 @@ function Products() {
           <button className='bg-[#FEAF00] text-sm px-4 py-2 rounded-lg cursor-pointer transition-all ease-in-out duration-300 hover:-translate-y-1' onClick={toggleModal}>Adicionar produto</button>
         </header>
         <div className='pt-6'>
-          <ul className='flex items-center justify-around text-xs bg-sky-950 text-white py-3'>
-            <li className="w-1/4 text-center">Nome</li>
-            <li className="w-1/4 text-center">Preço</li>
-            <li className="w-1/4 text-center">Categoria</li>
-            <li className="w-1/4 text-center">Quantidade</li>
+          <ul className='flex items-center justify-around text-xs bg-sky-800 text-white py-3 rounded-lg'>
+            <li className="w-1/4 text-center font-semibold">Nome</li>
+            <li className="w-1/4 text-center font-semibold">Preço</li>
+            <li className="w-1/4 text-center font-semibold">Categoria</li>
+            <li className="w-1/4 text-center font-semibold">Quantidade (un.)</li>
           </ul>
         </div>
         <Modal open={open}>
@@ -129,7 +133,8 @@ function Products() {
               <div className='flex items-center gap-3'>
                 <CircleDollarSign size={16} />
                 <input
-                  type="number"
+                  type="text"
+                  id='price'
                   placeholder='`Preço'
                   name='price'
                   value={formData.price}
@@ -189,9 +194,9 @@ function Products() {
             {allProducts && allProducts.length > 0 && allProducts.map((product) => (
               <li key={product.id} className='group grid grid-cols-4 text-center py-3 border-b-1 shadow-xs border-gray-200 transition-all ease-in-out duration-200 hover:shadow-md'>
                 <p>{product.name}</p>
-                <p>{product.price}</p>
+                <p>R$ {product.price}</p>
                 <p>{product.category ? product.category : '-'}</p>
-                <p>{product.stock} un.</p>
+                <p>{product.stock}</p>
                 <div className='absolute right-0 flex gap-4 mr-4 transition-all ease-in-out duration-600 opacity-0 group-hover:opacity-100'>
                   <p><PencilLine size={14} className='cursor-pointer transition-all ease-in-out duration-200 hover:scale-110' onClick={() => handleEdit(product)} /></p>
                   <p><Trash size={14} className='cursor-pointer transition-all ease-in-out duration-200 text-red-400 hover:scale-110' onClick={() => handleDelete(product.id)} /></p>
